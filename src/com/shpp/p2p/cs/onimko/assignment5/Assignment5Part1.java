@@ -30,7 +30,7 @@ public class Assignment5Part1 extends TextProgram {
    * @return An estimate of the number of syllables in that word.
    */
   private int syllablesIn(String word) {
-    List <Integer> vowelIndexChars = new ArrayList<>();
+    List <Integer> vowelIndexes = new ArrayList<>();
     //cut "e" of the end
     if (word.toLowerCase().endsWith("e")) word = word.substring(0,word.length()-1);
     //String to char array
@@ -39,14 +39,14 @@ public class Assignment5Part1 extends TextProgram {
     for (int i = 0; i < chars.length; i++)
       for (char vowel : VOWELS)
         if (chars[i] == vowel)
-              vowelIndexChars.add(i);
+              vowelIndexes.add(i);
     // number of vowels
-    int size = vowelIndexChars.size();
+    int size = vowelIndexes.size();
     // count vowels, that go one after one
     int twix = 0;
     for(int i = 0; i < size; i++)
       if(i!= size-1
-          && vowelIndexChars.get(i).intValue() == vowelIndexChars.get(i+1).intValue()-1)
+          && vowelIndexes.get(i).intValue() == vowelIndexes.get(i+1).intValue()-1)
         twix++;
     return size > 1 ? size-twix : 1;
   }
