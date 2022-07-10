@@ -54,7 +54,7 @@ public class Assignment5Part2 extends TextProgram {
       }
       i--;
     }
-
+    if (operation>0) result = operation +result;
 
     return result;
   }
