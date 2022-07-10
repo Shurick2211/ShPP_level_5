@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Assignment5Part1 extends TextProgram {
 
-  /**Vowels in the language*/
+  /**Vowels in the English*/
   private final char[] VOWELS = {'a','e','i','o','u','y'};
 
   /**
