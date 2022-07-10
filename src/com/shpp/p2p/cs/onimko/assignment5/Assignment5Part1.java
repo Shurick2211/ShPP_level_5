@@ -33,12 +33,10 @@ public class Assignment5Part1 extends TextProgram {
     List <Integer> vowelIndexes = new ArrayList<>();
     //cut "e" of the end
     if (word.toLowerCase().endsWith("e")) word = word.substring(0,word.length()-1);
-    //String to char array
-    char[] chars = word.toLowerCase().toCharArray();
     //get indexes of vowels
-    for (int i = 0; i < chars.length; i++)
+    for (int i = 0; i < word.length(); i++)
       for (char vowel : VOWELS)
-        if (chars[i] == vowel)
+        if (word.toLowerCase().charAt(i) == vowel)
               vowelIndexes.add(i);
     // number of vowels
     int size = vowelIndexes.size();
