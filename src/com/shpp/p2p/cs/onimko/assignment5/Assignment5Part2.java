@@ -26,39 +26,48 @@ public class Assignment5Part2 extends TextProgram {
    * @return A String representation of n1 + n2
    */
   private String addNumericStrings(String n1, String n2) {
+    return  n1.length() > n2.length() ? addBigSmallNumber(n1, n2) : addBigSmallNumber(n2, n1);
+  }
+
+  /**
+   * Method adds the numbers of different lengths
+   * @param big the number have with more digits
+   * @param small the number in which the digit is less or same.
+   * @return sum of the digits as string
+   */
+  private String addBigSmallNumber (String big, String small) {
     String result = "";
     int operation = 0;
-    String big;
-    String small;
-    if (n1.length() > n2.length()) {
-      big = n1;
-      small = n2;
-    }
-    else {
-      big = n2;
-      small = n1;
-    }
     int i = big.length()-1;
     int delta = big.length() - small.length();
     char smallChar;
     while (i >= 0){
-      if (i-delta >= 0) smallChar = small.charAt(i-delta);
+      // iteration of small numbers, when it ends return '0'
+      if (i - delta >= 0) smallChar = small.charAt(i - delta);
       else smallChar = '0';
+      // add two digits & remainder from the previous addition
       operation += addDigits(smallChar,big.charAt(i));
+      // preparing the result
       if (operation < 10) {
         result = operation + result;
         operation = 0;
       } else {
-        result = (operation+"").charAt(1) +result;
+        result = (operation + "").charAt(1) + result;
         operation = 1;
       }
       i--;
     }
-    if (operation>0) result = operation +result;
-
+    // if the number added a digit
+    if (operation > 0) result = operation + result;
     return result;
   }
 
+  /**
+   * Method converts the letters to the numbers and adds them
+   * @param firstDigit a first digit in char
+   * @param secondDigit a second digit in char
+   * @return sum of the digits as int
+   */
   private int addDigits(char firstDigit, char secondDigit) {
     return  firstDigit  + secondDigit - ('0'<<1);
   }
