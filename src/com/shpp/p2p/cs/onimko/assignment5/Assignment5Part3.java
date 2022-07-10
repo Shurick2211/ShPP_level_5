@@ -79,7 +79,7 @@ public class Assignment5Part3 extends TextProgram {
    * @return true - if the word contains the string or false - if not.
    */
   private boolean checkWord(String word, String str) {
-    return consonantsOfWord(word).indexOf(str) < 0 ? false : true;
+    return  consonantsOfWord(word).contains(str);
   }
 
   /**
