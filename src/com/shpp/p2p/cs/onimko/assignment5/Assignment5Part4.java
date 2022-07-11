@@ -18,11 +18,17 @@ public class Assignment5Part4 extends TextProgram {
   /**The column's index for print*/
   private final int COLUMN = 1;
 
-  /**The file name for parsing*/
-  private final String[] SEPARATORS = {",\"", "\",\"", "\","};
+  /**The separator on the CSV-file */
+  private final String CSV_SEPARATOR = ",";
 
-  /**The file name for parsing*/
+  /**String equals a quotes*/
   private final String ONE_QUOTES = "\"";
+
+  /**The array of separators*/
+  private final String[] SEPARATORS = {CSV_SEPARATOR + ONE_QUOTES,
+          ONE_QUOTES + CSV_SEPARATOR + ONE_QUOTES, ONE_QUOTES + CSV_SEPARATOR};
+
+
 
   /**
    * It is start method
@@ -63,7 +69,7 @@ public class Assignment5Part4 extends TextProgram {
   private ArrayList<String> fieldsIn(String line) {
     final String SEPARATOR = " <@#%> ";
     String [] fields;
-    if (!line.contains(",\"")) fields = line.split(",");
+    if (!line.contains(SEPARATORS[0])) fields = line.split(CSV_SEPARATOR);
     else {
       for (String sep : SEPARATORS) line = line.replaceAll(sep, SEPARATOR);
       fields = line.split(SEPARATOR);
