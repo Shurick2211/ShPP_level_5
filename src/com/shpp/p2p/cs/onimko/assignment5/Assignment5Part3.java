@@ -32,7 +32,7 @@ public class Assignment5Part3 extends TextProgram {
     println(
         words.stream().filter(word -> checkWord(word, str))
             .reduce((w,ww) -> w+", " + ww  )
-            .orElse("No the words of our dictionary.")
+            .orElse("The our dictionary has no the words for your string.")
     );
   }
 
