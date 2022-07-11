@@ -12,11 +12,23 @@ import java.util.stream.Collectors;
 
 public class Assignment5Part4 extends TextProgram {
 
+  /**The file name for parsing*/
+  private final String FILE_NAME = "food-origins.csv";
+
+  /**The column's index for print*/
+  private final int COLUMN = 1;
+
+  /**The file name for parsing*/
+  private final String[] SEPARATORS = {",\"", "\",\"", "\","};
+
+  /**The file name for parsing*/
+  private final String ONE_QUOTES = "\"";
+
   /**
    * It is start method
    */
   public void run() {
-    println(extractColumn("food-origins.csv",1));
+    println(extractColumn(FILE_NAME, COLUMN));
 
   }
 
@@ -28,15 +40,11 @@ public class Assignment5Part4 extends TextProgram {
    */
   private ArrayList<String> extractColumn(String filename, int columnIndex) {
     ArrayList<String> columns = new ArrayList<>();
-    ArrayList<String> rows;
-    BufferedReader br;
     String str;
     try {
-      br = new BufferedReader(new FileReader(filename));
-      while ((str=br.readLine()) != null) {
-        rows = fieldsIn(str);
-        columns.add("\""+rows.get(columnIndex)+"\"");
-      }
+      BufferedReader br = new BufferedReader(new FileReader(filename));
+      while ((str=br.readLine()) != null)
+        columns.add(ONE_QUOTES + fieldsIn(str).get(columnIndex) + ONE_QUOTES);
     } catch (FileNotFoundException e) {
       println(e.getMessage());
       return null;
@@ -57,9 +65,7 @@ public class Assignment5Part4 extends TextProgram {
     String [] fields;
     if (!line.contains(",\"")) fields = line.split(",");
     else {
-      line = line.replaceAll(",\"", SEPARATOR);
-      line = line.replaceAll("\",\"",SEPARATOR);
-      line = line.replaceAll("\",",SEPARATOR);
+      for (String sep : SEPARATORS) line = line.replaceAll(sep, SEPARATOR);
       fields = line.split(SEPARATOR);
       fields = removeLastQuotes(fields);
     }
@@ -72,15 +78,12 @@ public class Assignment5Part4 extends TextProgram {
    * @return the array without extra quotes
    */
   private String[] removeLastQuotes(String[] fields) {
-    final String SEPARATOR = "\"";
     for (int i = 0; i < fields.length; i++) {
-      if (fields[i].contains(SEPARATOR))
-        if ( fields[i].split(SEPARATOR).length % 2 == 1
-                && fields[i].lastIndexOf(SEPARATOR) == fields[i].length()-1)
+      if (fields[i].contains(ONE_QUOTES))
+        if (fields[i].split(ONE_QUOTES).length % 2 == 1
+                && fields[i].lastIndexOf(ONE_QUOTES) == fields[i].length()-1)
           fields[i] = fields[i].substring(0, fields[i].length()-1);
     }
     return fields;
   }
-
-
 }
