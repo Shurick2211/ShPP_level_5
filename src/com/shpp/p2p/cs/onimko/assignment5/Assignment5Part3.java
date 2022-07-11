@@ -10,8 +10,6 @@ import java.util.List;
 
 public class Assignment5Part3 extends TextProgram {
 
-  /**Vowels in the English*/
-  private final String[] VOWELS = {"a","e","i","o","u","y"};
   /** Our dictionary*/
   private final List<String> words = readDictionary();
 
@@ -62,24 +60,16 @@ public class Assignment5Part3 extends TextProgram {
   }
 
   /**
-   * Remove the vowels letters in an input word.
-   * @param word the input word.
-   * @return the word without vowels letters.
-   */
-  private String consonantsOfWord(String word) {
-    for (String v : VOWELS)
-     word = word.replaceAll(v,"");
-    return word;
-  }
-
-  /**
    * Method checks a word against the content of an input string.
    * @param word the check's word
    * @param str the input string
    * @return true - if the word contains the string or false - if not.
    */
   private boolean checkWord(String word, String str) {
-    return  consonantsOfWord(word).contains(str);
+    int first = word.indexOf(str.charAt(0));
+    int second = word.indexOf(str.charAt(1));
+    int third = word.indexOf(str.charAt(2));
+    return  first > -1 && second > first && third > second;
   }
 
   /**
@@ -87,20 +77,8 @@ public class Assignment5Part3 extends TextProgram {
    * @return the input string.
    */
   private String inputString() {
-    String input = readLine("Enter string of three consonants letters: ").toLowerCase();
-    if (hasVowels(input)) return null;
+    String input = readLine("Enter string of three letters: ").toLowerCase();
     if (input.length() != 3) return null;
     return  input;
-  }
-
-  /**
-   * Method checks a string against the content of the vowels.
-   * @param str the input string.
-   * @return true - if the string contains the string or false - if not.
-   */
-  private boolean hasVowels(String str) {
-    for (String v : VOWELS)
-      if (str.contains(v)) return true;
-    return false;
   }
 }

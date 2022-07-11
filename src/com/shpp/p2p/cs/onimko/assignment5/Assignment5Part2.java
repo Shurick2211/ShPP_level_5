@@ -20,7 +20,6 @@ public class Assignment5Part2 extends TextProgram {
   /**
    * Given two string representations of nonnegative integers, adds the
    * numbers represented by those strings and returns the result.
-   *
    * @param n1 The first number.
    * @param n2 The second number.
    * @return A String representation of n1 + n2
@@ -38,10 +37,9 @@ public class Assignment5Part2 extends TextProgram {
   private String addBigSmallNumber (String big, String small) {
     String result = "";
     int operation = 0;
-    int i = big.length()-1;
     int delta = big.length() - small.length();
     char smallChar;
-    while (i >= 0){
+    for (int i = big.length()-1; i >= 0; i--){
       // iteration of small numbers, when it ends return '0'
       if (i - delta >= 0) smallChar = small.charAt(i - delta);
       else smallChar = '0';
@@ -55,7 +53,6 @@ public class Assignment5Part2 extends TextProgram {
         result = (operation + "").charAt(1) + result;
         operation = 1;
       }
-      i--;
     }
     // if the number added a digit
     if (operation > 0) result = operation + result;
