@@ -36,16 +36,22 @@ public class Assignment5Part1 extends TextProgram {
     //get indexes of vowels
     for (int i = 0; i < word.length(); i++)
       for (char vowel : VOWELS)
-        if (word.toLowerCase().charAt(i) == vowel)
-              vowelIndexes.add(i);
-    // number of vowels
+        if (word.toLowerCase().charAt(i) == vowel) vowelIndexes.add(i);
+    return vowelIndexes.size() > 1 ? vowelIndexes.size()-twoLetters(vowelIndexes) : 1;
+  }
+
+  /**
+   * Method counts vowels in a word, that go one after one
+   * @param vowelIndexes list of position vowels in the word
+   * @return the number pairs vowels
+   */
+  private int twoLetters(List <Integer> vowelIndexes){
     int size = vowelIndexes.size();
-    // count vowels, that go one after one
     int twix = 0;
     for(int i = 0; i < size; i++)
       if(i!= size-1
           && vowelIndexes.get(i).intValue() == vowelIndexes.get(i+1).intValue()-1)
         twix++;
-    return size > 1 ? size-twix : 1;
+      return twix;
   }
 }
