@@ -1,27 +1,25 @@
 package com.shpp.p2p.cs.onimko.assignment5;
 
 import com.shpp.cs.a.console.TextProgram;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+
 import java.io.IOException;
-import java.util.LinkedList;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Assignment5Part3 extends TextProgram {
 
-  /** Our dictionary*/
-  private final List<String> words = readDictionary();
+  /** File name our dictionary*/
+  private final String FILE = "en-dictionary.txt";
 
   /**
    * It is start method
    */
   public void run() {
-    while (true) {
-      String str = null;
-      while (str == null) str = inputString();
-      printWords(str);
-    }
+      String str;
+      if ((str = inputString()) != null) printWords(str);
+      run();
   }
 
   /**
@@ -30,7 +28,7 @@ public class Assignment5Part3 extends TextProgram {
    */
   private void printWords(String str) {
     println(
-        words.stream().filter(word -> checkWord(word, str))
+        readDictionary().stream().filter(word -> checkWord(word, str))
             .reduce((w,ww) -> w+", " + ww  )
             .orElse("The our dictionary has no the words for your string.")
     );
@@ -42,21 +40,13 @@ public class Assignment5Part3 extends TextProgram {
    * and ends program.
    */
   private List<String> readDictionary()  {
-    List<String> words = new LinkedList<>();
-    BufferedReader br;
-    String str;
     try {
-      br = new BufferedReader(new FileReader("en-dictionary.txt"));
-      while ((str=br.readLine()) != null)
-      words.add(str);
-    } catch (FileNotFoundException e) {
-      println(e.getMessage());
-      System.exit(1);
+      return Files.lines(Paths.get(FILE)).collect(Collectors.toList());
     } catch (IOException e) {
-      println(e.getMessage());
+      println(e.toString());
       System.exit(2);
     }
-    return words;
+    return null;
   }
 
   /**
@@ -77,8 +67,7 @@ public class Assignment5Part3 extends TextProgram {
    * @return the input string.
    */
   private String inputString() {
-    String input = readLine("Enter string of three letters: ").toLowerCase();
-    if (input.length() != 3) return null;
-    return  input;
+    String input;
+    return  (input = readLine("Enter string of three letters: ").toLowerCase()).length() == 3 ? input: null;
   }
 }
