@@ -66,7 +66,7 @@ public class Assignment5Part4 extends TextProgram {
     // Change back
     for (int i = 0; i < fields.length; i++) {
       if ((index = fields[i].indexOf(TEMP_VALUE)) != -1)
-        if (index == fields[i].lastIndexOf(TEMP_VALUE)) fields[i] = temp.pollFirst();
+        if (index == fields[i].lastIndexOf(TEMP_VALUE)) fields[i] = fields[i].replace(TEMP_VALUE,temp.pollFirst());
         else while ((index = fields[i].indexOf(TEMP_VALUE)) != -1 )
           fields[i] = fields[i].substring(0, index)
                   + temp.pollFirst() + fields[i].substring(index+TEMP_VALUE.length());
