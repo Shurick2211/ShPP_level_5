@@ -65,11 +65,9 @@ public class Assignment5Part4 extends TextProgram {
     fields = line.split(CSV_SEPARATOR);
     // Change back
     for (int i = 0; i < fields.length; i++) {
-      if ((index = fields[i].indexOf(TEMP_VALUE)) != -1)
-        if (index == fields[i].lastIndexOf(TEMP_VALUE)) fields[i] = fields[i].replace(TEMP_VALUE,temp.pollFirst());
-        else while ((index = fields[i].indexOf(TEMP_VALUE)) != -1 )
-          fields[i] = fields[i].substring(0, index)
-                  + temp.pollFirst() + fields[i].substring(index+TEMP_VALUE.length());
+      while ((index = fields[i].indexOf(TEMP_VALUE)) != -1 )
+        fields[i] = fields[i].substring(0, index)
+            + temp.pollFirst() + fields[i].substring(index+TEMP_VALUE.length());
       if (fields[i].startsWith(ONE_QUOTES)) fields[i] = fields[i].substring(1,fields[i].length()-1);
     }
     return (ArrayList<String>) Arrays.stream(fields).collect(Collectors.toList());
