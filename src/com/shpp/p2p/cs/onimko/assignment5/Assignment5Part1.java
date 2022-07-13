@@ -31,8 +31,7 @@ public class Assignment5Part1 extends TextProgram {
    */
   private int syllablesIn(String word) {
     List <Integer> vowelIndexes = new ArrayList<>();
-    //cut "e" of the end
-    if (word.toLowerCase().endsWith("e")) word = word.substring(0,word.length()-1);
+    word = cutLastE(word);
     //get indexes of vowels
     for (int i = 0; i < word.length(); i++)
       for (char vowel : VOWELS)
@@ -53,5 +52,14 @@ public class Assignment5Part1 extends TextProgram {
           && vowelIndexes.get(i).intValue() == vowelIndexes.get(i+1).intValue()-1)
         twix++;
       return twix;
+  }
+
+  /**
+   * Method cuts "e" of the end of a word, if its need.
+   * @param word the input word
+   * @return the word without e of the end.
+   */
+  private String cutLastE(String word) {
+    return (word.toLowerCase().endsWith("e")) ?  word.substring(0,word.length()-1) : word;
   }
 }
