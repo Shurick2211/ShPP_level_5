@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class Assignment5Part4 extends TextProgram {
 
   /**The file name for parsing*/
-  private final String FILE_NAME = "food-origins.csv";
+  private final String FILE_NAME = "New.csv";
 
   /**The column's index for print*/
   private final int COLUMN = 1;
@@ -45,7 +45,7 @@ public class Assignment5Part4 extends TextProgram {
   private ArrayList<String> extractColumn(String filename, int columnIndex) {
     try {
       return (ArrayList<String>) Files.lines(Paths.get(filename))
-              .map(str -> ONE_QUOTES + fieldsIn(str).get(columnIndex) + ONE_QUOTES)
+              .map(str -> " " + fieldsIn(str).get(columnIndex) + " ")
               .collect(Collectors.toList());
     } catch (IOException e) {
       return null;
@@ -72,9 +72,13 @@ public class Assignment5Part4 extends TextProgram {
    * @return a string with TEMP_VALUE
    */
   private String changeValueOnTemp(String line) {
-    int index;
+    println(line);
+    int index ;
     while ((index = line.indexOf(ONE_QUOTES)) != -1) {
-      temp.add( line.substring(index , line.indexOf(ONE_QUOTES, index + 1) + 1));
+      int  endIndex = line.indexOf(ONE_QUOTES+CSV_SEPARATOR, index+1)+1;
+      if (endIndex < index) endIndex = line.length()-1;
+      println(endIndex);
+      temp.add( line.substring(index , endIndex).replaceAll(ONE_QUOTES+ONE_QUOTES,"||"));
       line = line.replace(temp.peekLast(), TEMP_VALUE);
     }
     return line;
