@@ -79,7 +79,7 @@ public class Assignment5Part4 extends TextProgram {
       if(line.startsWith(ONE_QUOTES)) index =-1;
       endIndex = line.indexOf(ONE_QUOTES+CSV_SEPARATOR, index+1)+1;
       if (endIndex < index) endIndex = line.length();
-      temp.add( line.substring(index+1 , endIndex));
+      temp.add(line.substring(index+1 , endIndex));
       line = line.replace(temp.peekLast(), TEMP_VALUE);
     }
     return line;
@@ -99,7 +99,6 @@ public class Assignment5Part4 extends TextProgram {
                 + temp.pollFirst() + fields[i].substring(index+TEMP_VALUE.length());
         fields[i] = removeQuotesInStartAndEnd(fields[i]);
       fields[i] = fields[i].replaceAll(ONE_QUOTES+ONE_QUOTES,ONE_QUOTES);
-
     }
     return fields;
   }
