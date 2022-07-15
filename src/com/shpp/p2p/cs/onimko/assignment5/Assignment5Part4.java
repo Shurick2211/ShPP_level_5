@@ -45,7 +45,7 @@ public class Assignment5Part4 extends TextProgram {
   private ArrayList<String> extractColumn(String filename, int columnIndex) {
     try {
       return (ArrayList<String>) Files.lines(Paths.get(filename))
-              .map(str -> " " + fieldsIn(str).get(columnIndex) + " ")
+              .map(str -> "  " + fieldsIn(str).get(columnIndex) + "  ")
               .collect(Collectors.toList());
     } catch (IOException e) {
       return null;
@@ -72,13 +72,14 @@ public class Assignment5Part4 extends TextProgram {
    * @return a string with TEMP_VALUE
    */
   private String changeValueOnTemp(String line) {
-    println(line);
     int index ;
-    while ((index = line.indexOf(ONE_QUOTES)) != -1) {
-      int  endIndex = line.indexOf(ONE_QUOTES+CSV_SEPARATOR, index+1)+1;
-      if (endIndex < index) endIndex = line.length()-1;
-      println(endIndex);
-      temp.add( line.substring(index , endIndex).replaceAll(ONE_QUOTES+ONE_QUOTES,"||"));
+    int  endIndex;
+    while ((index = line.indexOf(CSV_SEPARATOR+ONE_QUOTES)) != -1
+        || (line.indexOf(ONE_QUOTES+CSV_SEPARATOR) != -1)) {
+      if(line.startsWith(ONE_QUOTES)) index =-1;
+      endIndex = line.indexOf(ONE_QUOTES+CSV_SEPARATOR, index+1)+1;
+      if (endIndex < index) endIndex = line.length();
+      temp.add( line.substring(index+1 , endIndex));
       line = line.replace(temp.peekLast(), TEMP_VALUE);
     }
     return line;
@@ -97,6 +98,8 @@ public class Assignment5Part4 extends TextProgram {
         fields[i] = fields[i].substring(0, index)
                 + temp.pollFirst() + fields[i].substring(index+TEMP_VALUE.length());
         fields[i] = removeQuotesInStartAndEnd(fields[i]);
+      fields[i] = fields[i].replaceAll(ONE_QUOTES+ONE_QUOTES,ONE_QUOTES);
+
     }
     return fields;
   }
