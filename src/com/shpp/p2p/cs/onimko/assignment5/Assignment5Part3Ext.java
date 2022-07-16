@@ -1,37 +1,49 @@
 package com.shpp.p2p.cs.onimko.assignment5;
 
 import com.shpp.cs.a.console.TextProgram;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Assignment5Part3 extends TextProgram {
+public class Assignment5Part3Ext extends TextProgram {
 
   /** File name our dictionary*/
   private final String FILE = "en-dictionary.txt";
+
+  private final List<String> myDict = readDictionary();
 
   /**
    * It is start method
    */
   public void run() {
-      String str;
-      if ((str = inputString()) != null) printWords(str);
-      run();
+    boolean first = true;
+    int start = 'a';
+    int end = 'z';
+    int size = end - start;
+    String str;
+      for (int f = 0; f <= size; f++)
+        for (int s = 0; s <= size; s++)
+          for (int t = 0; t <= size; t++) {
+            str = String.valueOf(new char[]
+                {(char) (f + 'a'), (char) (s + 'a'), (char) (t + 'a')});
+            if(checksNoWords(str))
+              if (first) {
+                print(str);
+                first = false;
+              } else print(", "+str);
+      }
   }
 
   /**
-   * Method prints the finding words for an input string.
-   * @param str the input str
+   * Method checks the finding no words for an input string.
+   * @param str the input string
    */
-  private void printWords(String str) {
-    println(
-        readDictionary().stream().filter(word -> checkWord(word, str))
-            .reduce((w,ww) -> w+", " + ww  )
-            .orElse("The our dictionary has no the words for your string.")
-    );
+  private boolean checksNoWords(String str) {
+        return myDict.stream().parallel()
+            .filter(word -> checkWord(word, str)).count() == 0;
   }
 
   /**
@@ -41,7 +53,7 @@ public class Assignment5Part3 extends TextProgram {
    */
   private List<String> readDictionary()  {
     try {
-      return Files.lines(Paths.get(FILE)).collect(Collectors.toList());
+      return Files.lines(Paths.get(FILE)).parallel().collect(Collectors.toList());
     } catch (IOException e) {
       println(e.toString());
       System.exit(2);
@@ -62,12 +74,4 @@ public class Assignment5Part3 extends TextProgram {
     return  first != -1 && second !=-1 && third !=-1;
   }
 
-  /**
-   * Method asks the user an input string.
-   * @return the input string.
-   */
-  private String inputString() {
-    String input;
-    return  (input = readLine("Enter string of three letters: ").toLowerCase()).length() == 3 ? input: null;
-  }
 }
