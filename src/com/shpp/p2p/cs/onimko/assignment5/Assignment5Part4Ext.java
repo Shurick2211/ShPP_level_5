@@ -1,20 +1,19 @@
 package com.shpp.p2p.cs.onimko.assignment5;
 
 import com.shpp.cs.a.console.TextProgram;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 
-public class Assignment5Part4 extends TextProgram {
+public class Assignment5Part4Ext extends TextProgram {
 
   /**The file name for parsing*/
   private final String FILE_NAME = "New.csv";
-
-  /**The column's index for print*/
-  private final int COLUMN = 1;
 
   /**The separator on the CSV-file */
   private final String CSV_SEPARATOR = ",";
@@ -28,12 +27,63 @@ public class Assignment5Part4 extends TextProgram {
   /**Storage for temporary strings*/
   private final Deque<String> temp = new LinkedList<>();
 
+
   /**
    * It is start method
    */
   public void run() {
-    extractColumn(FILE_NAME, COLUMN).forEach(this::println);
+    printTable(createTable(FILE_NAME));
+  }
 
+  /**
+   * Method prints a table;
+   * @param table the input table;
+   */
+  private void printTable( ArrayList<ArrayList<String>> table) {
+    ArrayList<Integer> sizes = new ArrayList<>();
+    for (int j = 0; j < table.size(); j++) {
+      sizes.add(table.get(j).stream().map(s->s.length()).reduce(Integer::max).get());
+    }
+    printLine(sizes);
+    for(int i = 0; i < table.get(0).size(); i++){
+      for (int j = 0; j < table.size(); j++) {
+        print("|");
+        print(table.get(j).get(i));
+        for (int p = 0; p < sizes.get(j)-table.get(j).get(i).length(); p++) print(" ");
+      }
+      print("|");
+      println("");
+      printLine(sizes);
+    }
+  }
+
+  /**
+   * Method creates a table with a file
+   * @param fileName the name of input file
+   * @return the table
+   */
+  private ArrayList<ArrayList<String>> createTable(String fileName){
+    ArrayList<ArrayList<String>>table = new ArrayList<>();
+    int col = 0;
+    ArrayList<String> column;
+    while ((column = extractColumn(fileName, col++)) != null) {
+      table.add(column);
+    }
+    return table;
+  }
+
+  /**
+   * Method print a line between rows on the table
+   * @param sizes list the maximum size of column
+   */
+  private void printLine(ArrayList<Integer> sizes) {
+    for(int i = 0; i < sizes.size(); i++) {
+      print("|");
+      for (int ii = 0; ii < sizes.get(i); ii++)
+      print("-");
+    }
+    print("|");
+    println("");
   }
 
   /**
@@ -48,6 +98,8 @@ public class Assignment5Part4 extends TextProgram {
               .map(str -> fieldsIn(str).get(columnIndex))
               .collect(Collectors.toList());
     } catch (IOException e) {
+      return null;
+    } catch (IndexOutOfBoundsException e){
       return null;
     }
   }
