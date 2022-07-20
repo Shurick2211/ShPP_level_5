@@ -59,6 +59,7 @@ public class Assignment5Part4 extends TextProgram {
    */
   private ArrayList<String> fieldsIn(String line) {
     String [] fields;
+   // line = line.replaceAll(ONE_QUOTES+ONE_QUOTES,ONE_QUOTES);
     line = changeValueOnTemp(line);
     // Divide a row into columns
     fields = line.split(CSV_SEPARATOR);
@@ -98,7 +99,7 @@ public class Assignment5Part4 extends TextProgram {
         fields[i] = fields[i].substring(0, index)
                 + temp.pollFirst() + fields[i].substring(index+TEMP_VALUE.length());
         fields[i] = removeQuotesInStartAndEnd(fields[i]);
-      fields[i] = fields[i].replaceAll(ONE_QUOTES+ONE_QUOTES,ONE_QUOTES);
+     // fields[i] = fields[i].replaceAll(ONE_QUOTES+ONE_QUOTES,ONE_QUOTES);
     }
     return fields;
   }

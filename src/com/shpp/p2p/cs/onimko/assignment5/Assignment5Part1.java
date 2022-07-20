@@ -17,7 +17,7 @@ public class Assignment5Part1 extends TextProgram {
      * number of syllables in that word.
      */
     while (true) {
-      String word = readLine("Enter a single word: ");
+      String word = readLine("Enter a single word: ").trim();
       println("  Syllable count: " + syllablesIn(word));
     }
   }
