@@ -25,9 +25,6 @@ public class Assignment5Part4 extends TextProgram {
   /** Temporary value for changing*/
   private final String TEMP_VALUE = " <@#%> ";
 
-  /**Storage for temporary strings*/
-  private final Deque<String> temp = new LinkedList<>();
-
   /**
    * It is start method
    */
@@ -59,49 +56,36 @@ public class Assignment5Part4 extends TextProgram {
    */
   private ArrayList<String> fieldsIn(String line) {
     String [] fields;
-   // line = line.replaceAll(ONE_QUOTES+ONE_QUOTES,ONE_QUOTES);
     line = changeValueOnTemp(line);
     // Divide a row into columns
-    fields = line.split(CSV_SEPARATOR);
-    return (ArrayList<String>) Arrays.stream(rescueValue(fields)).collect(Collectors.toList());
+    fields = line.split(TEMP_VALUE);
+    rescueValue(fields);
+    return (ArrayList<String>) Arrays.stream(fields).collect(Collectors.toList());
   }
 
   /**
-   * Method changes the values of the columns like "..." to TEMP_VALUE,
+   * Method changes the CSV-separator on the TEMP_VALUE,
    * and writes it of temporary storage.
    * @param line the input string.
    * @return a string with TEMP_VALUE
    */
   private String changeValueOnTemp(String line) {
     int index ;
-    int  endIndex;
-    while ((index = line.indexOf(CSV_SEPARATOR+ONE_QUOTES)) != -1
-        || (line.indexOf(ONE_QUOTES+CSV_SEPARATOR) != -1)) {
-      if(line.startsWith(ONE_QUOTES)) index =-1;
-      endIndex = line.indexOf(ONE_QUOTES+CSV_SEPARATOR, index+1)+1;
-      if (endIndex < index) endIndex = line.length();
-      temp.add(line.substring(index+1 , endIndex));
-      line = line.replace(temp.peekLast(), TEMP_VALUE);
-    }
+    while ((index = getSeparatorIndex(line)) != -1)
+     line = line.substring(0,index)+TEMP_VALUE+line.substring(index+1);
     return line;
   }
 
   /**
-   * Method rescues the values in the array, that contains the TEMP_VALUE,
-   * used for its temporary storage.
+   * Method rescues the values in the array
    * @param fields the input array with TEMP_VALUE.
    * @return an array with origin values.
    */
-  private String [] rescueValue(String [] fields) {
-    int index;
+  private void rescueValue(String [] fields) {
     for (int i = 0; i < fields.length; i++) {
-      while ((index = fields[i].indexOf(TEMP_VALUE)) != -1)
-        fields[i] = fields[i].substring(0, index)
-                + temp.pollFirst() + fields[i].substring(index+TEMP_VALUE.length());
         fields[i] = removeQuotesInStartAndEnd(fields[i]);
-     // fields[i] = fields[i].replaceAll(ONE_QUOTES+ONE_QUOTES,ONE_QUOTES);
+        fields[i] = fields[i].replaceAll(ONE_QUOTES+ONE_QUOTES,ONE_QUOTES);
     }
-    return fields;
   }
 
   /**
@@ -113,5 +97,23 @@ public class Assignment5Part4 extends TextProgram {
   private String removeQuotesInStartAndEnd(String field) {
     return field.startsWith(ONE_QUOTES) && field.endsWith(ONE_QUOTES) ?
             field.substring(1,field.length()-1) : field;
+  }
+
+  /**
+   * This method returns the index of the nearest comma as cell separator.
+   * If its none it returns "-1".
+   * @param line the input line
+   */
+  private int getSeparatorIndex(String line) {
+    int quotesCounter = 0;
+    for (int i = 0; i < line.length(); i++) {
+      if (line.charAt(i) == '"') {
+        quotesCounter++;
+      }
+      if (line.charAt(i) == ',' && quotesCounter % 2 == 0) {
+        return i;
+      }
+    }
+    return -1;
   }
 }
