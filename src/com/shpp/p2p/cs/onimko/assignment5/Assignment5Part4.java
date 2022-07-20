@@ -103,16 +103,14 @@ public class Assignment5Part4 extends TextProgram {
    * This method returns the index of the nearest comma as cell separator.
    * If its none it returns "-1".
    * @param line the input line
+   * @return the index of separator or "-1".
    */
   private int getSeparatorIndex(String line) {
     int quotesCounter = 0;
     for (int i = 0; i < line.length(); i++) {
-      if (line.charAt(i) == '"') {
-        quotesCounter++;
-      }
-      if (line.charAt(i) == ',' && quotesCounter % 2 == 0) {
+      if (line.charAt(i) == ONE_QUOTES.charAt(0)) quotesCounter++;
+      if (line.charAt(i) == CSV_SEPARATOR.charAt(0) && quotesCounter % 2 == 0)
         return i;
-      }
     }
     return -1;
   }
